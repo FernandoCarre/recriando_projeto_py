@@ -1,7 +1,8 @@
 import os
 
-restaurantes = [{'nome':'Fernando Sushi', 'categoria':'Japonesa', 'ativo': False,
-                 'nome':'Neguinha Marmita', 'categoria': 'Marmita', 'ativo': True}]
+restaurantes = [{'nome':'Fernando Sushi', 'categoria':'Japonesa', 'ativo': False},
+                 {'nome':'Neguinha Marmita', 'categoria': 'Marmita', 'ativo': True}]
+#porque eu não fechei as chaves de cada dicionário a lista considerou apenas o último dicionário.
 
 def exibir_nome_do_programa():
     print('''
@@ -24,46 +25,55 @@ def exibir_opcoes():
       '3- Alternar restaurante\n'
       '4- Encerrar aplicativo\n')
     
+def exibir_subtitulo(texto):
+    os.system('cls')
+    print(texto)
+    print()
+    
 def retornar_menu_principal():
      input('\nTecle enter para para retornar ao menu principal ')
      main()
     
 def cadastro_restaurante():
-    os.system('cls')
-    print('Cadastro de restaurante')
+    exibir_subtitulo('Cadastro de restaurante:')
     nome_do_restaurante = input('Digite o nome do restaurante que deseja cadastrar: ')
-    categoria = input('Digite a categoria do restaurante: ')
-    restaurantes.append(nome_do_restaurante)
-    restaurantes.append(categoria)
-    print(f'O restaurante {nome_do_restaurante} de {categoria} foi cadastrado com sucesso!')
-
+    categoria = input(f'Digite a categoria do restaurante {nome_do_restaurante}: ')
+    ###-meu erro corrigido
+    dados_do_restaurante = {'nome': nome_do_restaurante, 'categoria':categoria, 'ativo': False}
+    restaurantes.append(dados_do_restaurante)
+    ###
+    print(f'O restaurante {nome_do_restaurante} foi cadastrado com sucesso!')
     retornar_menu_principal()
 
 def exibir_restaurantes():
-    os.system('cls')
-    print('Lista de restaurantes cadastrados:\n')
-
+    exibir_subtitulo('Lista de restaurantes cadastrados:')
     for restaurante in restaurantes:
-        print(restaurante)
-
+        ###-meu erro corrigo
+        nome_do_restaurante = restaurante['nome']
+        categoria = restaurante['categoria']
+        ativo = restaurante['ativo']
+        print(f'- {nome_do_restaurante} | {categoria} | {ativo}')
+        #print(f'{restaurante['nome'], restaurante['categoria'], restaurante['ativo']}')
+        ###
     retornar_menu_principal()
 
 def alternar_estado_restaurante():
-    os.system('cls')
-    print('Alternar o estado do restaurante')
-
+    exibir_subtitulo('Alternar o estado do restaurante:')
     nome_do_restaurante = input('Digite o nome do restaurante que deseja alternar o estado: ')
     restaurante_encontrado = False
 
     for restaurante in restaurantes:
         if nome_do_restaurante == restaurante['nome']:
             restaurante_encontrado = True
-            print('Deu certo')
-
-        
-
-
-    
+            ###
+            restaurante['ativo'] = not restaurante['ativo']
+            mensagem = f'O restaurante {nome_do_restaurante} foi ativado com sucesso!' if restaurante['ativo'] else f'O restaurante {nome_do_restaurante} foi desativado com sucesso!'
+            print(mensagem)
+    if not restaurante_encontrado:
+            print('O restaurante não foi encontrado.')
+            ###
+    retornar_menu_principal()
+          
 def finalizar_app():
     os.system('cls')
     print('Aplicativo encerrado.')    
@@ -100,6 +110,3 @@ def main():
 #acertei de first try! Uau.
 if __name__ == '__main__':
     main()
-
-
-
